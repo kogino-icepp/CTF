@@ -1,13 +1,10 @@
-#!/usr/bin/env python3
-
 import telnetlib
 import json
 
 HOST = "socket.cryptohack.org"
-PORT = 11112
+PORT = 13377
 
 tn = telnetlib.Telnet(HOST, PORT)
-
 
 def readline():
     return tn.read_until(b"\n")
@@ -20,19 +17,16 @@ def json_send(hsh):
     request = json.dumps(hsh).encode()
     tn.write(request)
 
+received = json_recv()
 
-print(readline())
-print(readline())
-print(readline())
-print(readline())
+print("Received type: ")
+print(received["type"])
+print("Received encoded value: ")
+print(received["encoded"])
 
-
-request = {
-    "buy": "flag"
+to_send = {
+    "decoded": "changeme"
 }
-json_send(request)
+json_send(to_send)
 
-response = json_recv()
-
-print("Flag:")
-print(response["flag"])
+json_recv()
